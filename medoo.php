@@ -325,9 +325,13 @@ class medoo
 								break;
 
 							case 'array':
-								$wheres[] = $column . ' IN (' . $this->array_quote($value) . ')';
+								$where = '(';
+								if(in_array(null, $value)){
+									$where = '(' . $column . ' IS NULL OR ';
+								}
+								$where .= $column . ' IN (' . $this->array_quote($value) . ') )';
+								$wheres[] = $where;
 								break;
-
 							case 'integer':
 							case 'double':
 								$wheres[] = $column . ' = ' . $value;
